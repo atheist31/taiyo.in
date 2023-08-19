@@ -73,3 +73,5 @@ const LineGraph: React.FC = () => {
 };
 
 export default LineGraph;
+
+

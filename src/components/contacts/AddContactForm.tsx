@@ -5,24 +5,34 @@ import { addContact } from "../../redux/actions";
 import ContactNavbar from "./ContactNavbar";
 
 const AddContactForm: React.FC = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState(0);
-
   const dispatch = useDispatch();
+
+  const [contactInfo, setContactInfo] = useState<Contact>({
+    id: 0,
+    name: "",
+    email: "",
+    phone: 0,
+  });
+
+  const { name, email, phone } = contactInfo;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     const newContact: Contact = {
       id: Date.now(),
       name,
       email,
       phone,
     };
+
     dispatch(addContact(newContact));
-    setName("");
-    setEmail("");
-    setPhone(0);
+    setContactInfo({
+      ...contactInfo,
+      name: "",
+      email: "",
+      phone: 0,
+    });
   };
 
   return (
@@ -36,7 +46,7 @@ const AddContactForm: React.FC = () => {
             type="text"
             placeholder="Name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => setContactInfo({ ...contactInfo, name: e.target.value })}
             className="border rounded-lg p-2"
           />
           <input
@@ -44,7 +54,7 @@ const AddContactForm: React.FC = () => {
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setContactInfo({ ...contactInfo, email: e.target.value })}
             className="border rounded-lg p-2"
           />
           <input
@@ -52,12 +62,12 @@ const AddContactForm: React.FC = () => {
             type="number"
             placeholder="Phone"
             value={phone === 0 ? "" : phone}
-            onChange={(e) => setPhone(Number(e.target.value))}
+            onChange={(e) => setContactInfo({ ...contactInfo, phone: Number(e.target.value) })}
             className="border rounded-lg p-2"
           />
           <button
             type="submit"
-            className="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-green-600 block"
+            className="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 block"
           >
             Add Contact
           </button>
@@ -68,3 +78,4 @@ const AddContactForm: React.FC = () => {
 };
 
 export default AddContactForm;
+
